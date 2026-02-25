@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carnevale di Cento 2026 - Vota il tuo Carro!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #1a0533 60%, #0d0a1a 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Confetti canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      color: #c4b5fd;
+      font-weight: 600;
+    }
+
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+
+    /* Cards grid */
+    .carri-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem 2rem;
+    }
+
+    .carro-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .carro-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .carro-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carro-info {
+      padding: 1.2rem 1.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .carro-info h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #ffd93d;
+    }
+
+    /* Vote button */
+    .vote-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+    }
+
+    .vote-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(238, 90, 36, 0.6);
+    }
+
+    .vote-btn:active {
+      transform: scale(0.97);
+    }
+
+    .vote-btn.voted {
+      background: linear-gradient(135deg, #6bcb77, #38b000);
+      box-shadow: 0 4px 15px rgba(56, 176, 0, 0.4);
+      cursor: default;
+    }
+
+    .vote-btn.voted:hover {
+      transform: none;
+      box-shadow: 0 4px 15px rgba(56, 176, 0, 0.4);
+    }
+
+    .vote-count {
+      display: block;
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+      color: #a78bfa;
+      font-weight: 600;
+    }
+
+    /* Results section */
+    .results-section {
+      max-width: 800px;
+      margin: 2rem auto 3rem;
+      padding: 0 2rem;
+    }
+
+    .results-section h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #ffd93d;
+    }
+
+    .result-bar-container {
+      margin-bottom: 1rem;
+    }
+
+    .result-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .result-bar {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .result-fill {
+      height: 100%;
+      border-radius: 16px;
+      transition: width 0.8s ease;
+      min-width: 0;
+    }
+
+    .bar-fantasti100  { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
+    .bar-mazalora     { background: linear-gradient(90deg, #ffd93d, #f9a825); }
+    .bar-guercino     { background: linear-gradient(90deg, #ff9a3c, #ff6348); }
+    .bar-risveglio    { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+    .bar-toponi       { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+
+    /* Reset button */
+    .reset-wrapper {
+      text-align: center;
+      padding-bottom: 3rem;
+    }
+
+    .reset-btn {
+      padding: 0.5rem 1.5rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      background: transparent;
+      color: #a78bfa;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .reset-btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    /* Modal overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: linear-gradient(135deg, #2d1b69, #1a0533);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal h3 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      color: #ffd93d;
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal .modal-subtitle {
+      text-align: center;
+      color: #c4b5fd;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .modal label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      color: #c4b5fd;
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .modal input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .modal input:focus {
+      border-color: #ffd93d;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-btn.cancel {
+      background: rgba(255, 255, 255, 0.08);
+      color: #c4b5fd;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .modal-btn.cancel:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .modal-btn.confirm {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+    }
+
+    .modal-btn.confirm:hover {
+      box-shadow: 0 6px 25px rgba(238, 90, 36, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .modal-btn.confirm:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .modal-error {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 0.8rem;
+      min-height: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #6b5b95;
+      font-size: 0.85rem;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 700px) {
+      .carri-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1.5rem;
+      }
+      .results-section { padding: 0 1rem; }
+      .modal { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<header>
+  <h1>Carnevale di Cento 2026</h1>
+  <p>Vota il tuo carro preferito!</p>
+</header>
+
+<section class="carri-grid" id="carri-grid"></section>
+
+<section class="results-section" id="results-section">
+  <h2>Classifica</h2>
+  <div id="results-bars"></div>
+</section>
+
+<div class="reset-wrapper">
+  <button class="reset-btn" onclick="resetVote()">Cambia il tuo voto</button>
+</div>
+
+<!-- Vote modal -->
+<div class="modal-overlay" id="vote-modal">
+  <div class="modal">
+    <h3>Vota per <span id="modal-carro-name"></span></h3>
+    <p class="modal-subtitle">Inserisci i tuoi dati per votare</p>
+    <div class="form-group">
+      <label for="vote-nome">Nome *</label>
+      <input type="text" id="vote-nome" placeholder="Il tuo nome" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label for="vote-telefono">Telefono</label>
+      <input type="tel" id="vote-telefono" placeholder="+39 333 1234567" autocomplete="tel">
+    </div>
+    <div class="form-group">
+      <label for="vote-email">Email *</label>
+      <input type="email" id="vote-email" placeholder="la-tua@email.com" autocomplete="email">
+    </div>
+    <div class="modal-buttons">
+      <button class="modal-btn cancel" onclick="closeModal()">Annulla</button>
+      <button class="modal-btn confirm" id="confirm-btn" onclick="submitVote()">Conferma Voto</button>
+    </div>
+    <p class="modal-error" id="modal-error"></p>
+  </div>
+</div>
+
+<footer>
+  Carnevale di Cento &mdash; Il Carnevale pi&ugrave; pazzo del mondo!
+</footer>
+
+<script>
+  // ===========================================================
+  // CONFIG — Paste your Google Apps Script Web App URL here
+  // ===========================================================
+  const GOOGLE_SCRIPT_URL = '';
+  // Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
+  // ===========================================================
+
+  // ---- Data ----
+  const carri = [
+    { id: 'fantasti100',  name: 'Fantasti100',          img: 'images/fantasti100.jpg',          barClass: 'bar-fantasti100' },
+    { id: 'mazalora',     name: 'Mazalora',             img: 'images/mazalora.jpg',             barClass: 'bar-mazalora' },
+    { id: 'guercino',     name: 'Ragazzi del Guercino', img: 'images/ragazzi-del-guercino.jpg', barClass: 'bar-guercino' },
+    { id: 'risveglio',    name: 'Risveglio',            img: 'images/risveglio.jpg',            barClass: 'bar-risveglio' },
+    { id: 'toponi',       name: 'Toponi',               img: 'images/toponi.jpg',               barClass: 'bar-toponi' },
+  ];
+
+  const carroNameMap = {};
+  carri.forEach(c => carroNameMap[c.id] = c.name);
+
+  // ---- State ----
+  let voteCounts = {};
+  let selectedCarroId = null;
+
+  function getUserVote() { return localStorage.getItem('carnevale_user_vote') || null; }
+  function setUserVote(id) { localStorage.setItem('carnevale_user_vote', id); }
+  function clearUserVote() { localStorage.removeItem('carnevale_user_vote'); }
+
+  function initCounts() {
+    carri.forEach(c => { if (!(c.id in voteCounts)) voteCounts[c.id] = 0; });
+  }
+
+  // ---- Load votes from Google Sheets ----
+  async function loadVotesFromSheet() {
+    if (!GOOGLE_SCRIPT_URL) return;
+    try {
+      const res = await fetch(GOOGLE_SCRIPT_URL);
+      const json = await res.json();
+      if (json.result === 'success' && json.counts) {
+        // Map carro names back to IDs
+        Object.entries(json.counts).forEach(([carro, count]) => {
+          const found = carri.find(c => c.name === carro || c.id === carro);
+          if (found) voteCounts[found.id] = count;
+        });
+        renderCards();
+        renderResults();
+      }
+    } catch (e) {
+      console.warn('Could not load votes from Google Sheets:', e);
+    }
+  }
+
+  // ---- Modal ----
+  function openModal(carroId) {
+    selectedCarroId = carroId;
+    document.getElementById('modal-carro-name').textContent = carroNameMap[carroId];
+    document.getElementById('vote-nome').value = '';
+    document.getElementById('vote-telefono').value = '';
+    document.getElementById('vote-email').value = '';
+    document.getElementById('modal-error').textContent = '';
+    document.getElementById('confirm-btn').disabled = false;
+    document.getElementById('vote-modal').classList.add('active');
+    document.getElementById('vote-nome').focus();
+  }
+
+  function closeModal() {
+    document.getElementById('vote-modal').classList.remove('active');
+    selectedCarroId = null;
+  }
+
+  // Close modal on overlay click
+  document.getElementById('vote-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ---- Submit Vote ----
+  async function submitVote() {
+    const nome = document.getElementById('vote-nome').value.trim();
+    const telefono = document.getElementById('vote-telefono').value.trim();
+    const email = document.getElementById('vote-email').value.trim();
+    const errorEl = document.getElementById('modal-error');
+    const confirmBtn = document.getElementById('confirm-btn');
+
+    // Validation
+    if (!nome) { errorEl.textContent = 'Inserisci il tuo nome.'; return; }
+    if (!email) { errorEl.textContent = 'Inserisci la tua email.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = 'Inserisci un indirizzo email valido.'; return;
+    }
+
+    errorEl.textContent = '';
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Invio...';
+
+    const carroName = carroNameMap[selectedCarroId];
+
+    // Send to Google Sheets
+    if (GOOGLE_SCRIPT_URL) {
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            nome: nome,
+            telefono: telefono,
+            email: email,
+            carro: carroName
+          })
+        });
+      } catch (e) {
+        console.warn('Google Sheets POST failed:', e);
+        errorEl.textContent = 'Errore di rete. Riprova.';
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Conferma Voto';
+        return;
+      }
+    }
+
+    // Save locally
+    voteCounts[selectedCarroId] = (voteCounts[selectedCarroId] || 0) + 1;
+    setUserVote(selectedCarroId);
+
+    closeModal();
+    renderCards();
+    renderResults();
+    launchConfetti();
+
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = 'Conferma Voto';
+  }
+
+  // ---- Render Cards ----
+  function renderCards() {
+    const grid = document.getElementById('carri-grid');
+    const userVote = getUserVote();
+
+    grid.innerHTML = carri.map(c => {
+      const isVoted = userVote === c.id;
+      const btnLabel = isVoted ? '&#10003; Votato!' : 'Vota';
+      const btnClass = isVoted ? 'vote-btn voted' : 'vote-btn';
+      const disabled = userVote && !isVoted ? 'disabled style="opacity:0.4;cursor:default;"' : '';
+      return `
+        <div class="carro-card">
+          <img src="${c.img}" alt="${c.name}" loading="lazy">
+          <div class="carro-info">
+            <h2>${c.name}</h2>
+            <button class="${btnClass}" onclick="vote('${c.id}')" ${userVote ? (isVoted ? '' : disabled) : ''}>
+              ${btnLabel}
+            </button>
+            <span class="vote-count">${voteCounts[c.id] || 0} vot${(voteCounts[c.id] || 0) === 1 ? 'o' : 'i'}</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ---- Render Results Bars ----
+  function renderResults() {
+    const totalVotes = Object.values(voteCounts).reduce((a, b) => a + b, 0);
+    const sorted = [...carri].sort((a, b) => (voteCounts[b.id] || 0) - (voteCounts[a.id] || 0));
+
+    const barsEl = document.getElementById('results-bars');
+    barsEl.innerHTML = sorted.map(c => {
+      const count = voteCounts[c.id] || 0;
+      const pct = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+      return `
+        <div class="result-bar-container">
+          <div class="result-label">
+            <span>${c.name}</span>
+            <span>${pct}%</span>
+          </div>
+          <div class="result-bar">
+            <div class="result-fill ${c.barClass}" style="width: ${pct}%"></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ---- Vote Action (opens modal) ----
+  function vote(id) {
+    if (getUserVote()) return;
+    openModal(id);
+  }
+
+  // ---- Reset Vote ----
+  function resetVote() {
+    const prev = getUserVote();
+    if (!prev) return;
+    if (voteCounts[prev] > 0) voteCounts[prev]--;
+    clearUserVote();
+    renderCards();
+    renderResults();
+  }
+
+  // ---- Confetti ----
+  function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#a78bfa', '#ff9a3c', '#ee5a24'];
+    const pieces = [];
+
+    for (let i = 0; i < 150; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: Math.random() * 10 + 5,
+        h: Math.random() * 6 + 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vy: Math.random() * 3 + 2,
+        vx: (Math.random() - 0.5) * 2,
+        rot: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 8,
+      });
+    }
+
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      pieces.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        if (p.y < canvas.height + 20) alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      frame++;
+      if (alive && frame < 300) requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    draw();
+  }
+
+  // ---- Init ----
+  initCounts();
+  renderCards();
+  renderResults();
+  loadVotesFromSheet();
+</script>
+</body>
+</html>
