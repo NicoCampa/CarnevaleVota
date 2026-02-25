@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carnevale di Cento 2026 - Vota il tuo Carro!</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #1a0533 60%, #0d0a1a 100%);
-      color: #fff;
+      background: #FFF8F0;
+      color: #2d2d2d;
       min-height: 100vh;
       overflow-x: hidden;
     }
@@ -26,77 +26,94 @@
       z-index: 9999;
     }
 
+    /* Decorative top banner */
+    .top-banner {
+      background: linear-gradient(135deg, #FF4B4B, #FF8C00, #FFD700, #32CD32, #4169E1, #9B59B6);
+      background-size: 300% 300%;
+      animation: bannerShift 8s ease infinite;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .top-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 0; right: 0;
+      height: 20px;
+      background: #FFF8F0;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    @keyframes bannerShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
     /* Header */
     header {
       text-align: center;
-      padding: 3rem 1rem 2rem;
-      position: relative;
+      padding: 2.5rem 1rem 1.5rem;
     }
 
     header h1 {
       font-family: 'Fredoka One', cursive;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s linear infinite;
-      margin-bottom: 0.5rem;
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      color: #FF4B4B;
+      text-shadow: 3px 3px 0 #FFD700, 6px 6px 0 rgba(0,0,0,0.06);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.5px;
     }
 
     header p {
-      font-size: clamp(1rem, 3vw, 1.3rem);
-      color: #c4b5fd;
-      font-weight: 600;
-    }
-
-    @keyframes shimmer {
-      to { background-position: 200% center; }
+      font-size: clamp(1.05rem, 3vw, 1.4rem);
+      color: #666;
+      font-weight: 700;
     }
 
     /* Cards grid */
     .carri-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 1rem 2rem 2rem;
+      padding: 1.5rem 2rem 2rem;
     }
 
     .carro-card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
+      background: #fff;
+      border-radius: 24px;
       overflow: hidden;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      backdrop-filter: blur(10px);
-      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 2px solid transparent;
     }
 
     .carro-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 12px 40px rgba(255, 75, 75, 0.15), 0 4px 20px rgba(0,0,0,0.08);
+      border-color: #FFD700;
     }
 
     .carro-card img {
       width: 100%;
-      height: 280px;
+      height: 350px;
       object-fit: cover;
       display: block;
     }
 
     .carro-info {
-      padding: 1.2rem 1.5rem 1.5rem;
+      padding: 1.2rem 1.5rem 1.8rem;
       text-align: center;
     }
 
     .carro-info h2 {
       font-family: 'Fredoka One', cursive;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
-      color: #ffd93d;
+      color: #E63946;
     }
 
     /* Vote button */
@@ -104,22 +121,24 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.7rem 2rem;
+      padding: 0.75rem 2.2rem;
       border: none;
       border-radius: 50px;
       font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 800;
       cursor: pointer;
       transition: all 0.3s ease;
-      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      background: linear-gradient(135deg, #FF4B4B, #FF8C00);
       color: #fff;
-      box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+      box-shadow: 0 4px 15px rgba(255, 75, 75, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .vote-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 25px rgba(238, 90, 36, 0.6);
+      transform: scale(1.06);
+      box-shadow: 0 6px 25px rgba(255, 75, 75, 0.5);
     }
 
     .vote-btn:active {
@@ -127,94 +146,99 @@
     }
 
     .vote-btn.voted {
-      background: linear-gradient(135deg, #6bcb77, #38b000);
-      box-shadow: 0 4px 15px rgba(56, 176, 0, 0.4);
+      background: linear-gradient(135deg, #2ECC71, #27AE60);
+      box-shadow: 0 4px 15px rgba(46, 204, 113, 0.35);
       cursor: default;
     }
 
     .vote-btn.voted:hover {
       transform: none;
-      box-shadow: 0 4px 15px rgba(56, 176, 0, 0.4);
+      box-shadow: 0 4px 15px rgba(46, 204, 113, 0.35);
     }
 
     .vote-count {
       display: block;
       margin-top: 0.8rem;
       font-size: 0.95rem;
-      color: #a78bfa;
-      font-weight: 600;
+      color: #999;
+      font-weight: 700;
     }
 
     /* Results section */
     .results-section {
       max-width: 800px;
-      margin: 2rem auto 3rem;
+      margin: 1.5rem auto 2rem;
       padding: 0 2rem;
     }
 
     .results-section h2 {
       font-family: 'Fredoka One', cursive;
-      font-size: 2rem;
+      font-size: 2.2rem;
       text-align: center;
       margin-bottom: 1.5rem;
-      color: #ffd93d;
+      color: #E63946;
+      text-shadow: 2px 2px 0 #FFD700;
     }
 
     .result-bar-container {
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
+      background: #fff;
+      border-radius: 16px;
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
     .result-label {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 0.3rem;
-      font-weight: 700;
+      margin-bottom: 0.4rem;
+      font-weight: 800;
       font-size: 0.95rem;
+      color: #333;
     }
 
     .result-bar {
-      height: 32px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
+      height: 28px;
+      background: #f0ebe4;
+      border-radius: 14px;
       overflow: hidden;
-      position: relative;
     }
 
     .result-fill {
       height: 100%;
-      border-radius: 16px;
+      border-radius: 14px;
       transition: width 0.8s ease;
       min-width: 0;
     }
 
-    .bar-fantasti100  { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
-    .bar-mazalora     { background: linear-gradient(90deg, #ffd93d, #f9a825); }
-    .bar-guercino     { background: linear-gradient(90deg, #ff9a3c, #ff6348); }
-    .bar-risveglio    { background: linear-gradient(90deg, #e74c3c, #c0392b); }
-    .bar-toponi       { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+    .bar-fantasti100  { background: linear-gradient(90deg, #FF4B4B, #FF6B6B); }
+    .bar-mazalora     { background: linear-gradient(90deg, #FF8C00, #FFB347); }
+    .bar-guercino     { background: linear-gradient(90deg, #E63946, #FF6B6B); }
+    .bar-risveglio    { background: linear-gradient(90deg, #9B59B6, #C39BD3); }
+    .bar-toponi       { background: linear-gradient(90deg, #4169E1, #6C9BF5); }
 
     /* Reset button */
     .reset-wrapper {
       text-align: center;
-      padding-bottom: 3rem;
+      padding-bottom: 2rem;
     }
 
     .reset-btn {
       padding: 0.5rem 1.5rem;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 2px solid #ddd;
       border-radius: 50px;
-      background: transparent;
-      color: #a78bfa;
+      background: #fff;
+      color: #999;
       font-family: 'Nunito', sans-serif;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .reset-btn:hover {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
+      border-color: #FF4B4B;
+      color: #FF4B4B;
     }
 
     /* Modal overlay */
@@ -223,8 +247,8 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
       z-index: 1000;
       justify-content: center;
       align-items: center;
@@ -236,29 +260,31 @@
     }
 
     .modal {
-      background: linear-gradient(135deg, #2d1b69, #1a0533);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 24px;
-      padding: 2rem;
+      background: #fff;
+      border-radius: 28px;
+      padding: 2.2rem;
       max-width: 440px;
       width: 100%;
       position: relative;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+      border-top: 5px solid;
+      border-image: linear-gradient(90deg, #FF4B4B, #FF8C00, #FFD700, #32CD32, #4169E1) 1;
     }
 
     .modal h3 {
       font-family: 'Fredoka One', cursive;
       font-size: 1.5rem;
-      color: #ffd93d;
+      color: #E63946;
       text-align: center;
       margin-bottom: 0.3rem;
     }
 
     .modal .modal-subtitle {
       text-align: center;
-      color: #c4b5fd;
+      color: #999;
       font-size: 0.95rem;
       margin-bottom: 1.5rem;
+      font-weight: 600;
     }
 
     .modal .form-group {
@@ -267,31 +293,59 @@
 
     .modal label {
       display: block;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.85rem;
       margin-bottom: 0.3rem;
-      color: #c4b5fd;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .modal input {
       width: 100%;
-      padding: 0.7rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+      padding: 0.75rem 1rem;
+      border: 2px solid #eee;
+      border-radius: 14px;
+      background: #FAFAFA;
+      color: #333;
       font-family: 'Nunito', sans-serif;
       font-size: 1rem;
+      font-weight: 600;
       outline: none;
       transition: border-color 0.3s ease;
     }
 
     .modal input::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: #bbb;
     }
 
     .modal input:focus {
-      border-color: #ffd93d;
+      border-color: #FF8C00;
+      background: #fff;
+    }
+
+    /* OTP section */
+    .otp-section {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .otp-section.active {
+      display: block;
+    }
+
+    .otp-section p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.8rem;
+    }
+
+    .otp-input {
+      text-align: center;
+      font-size: 1.5rem;
+      letter-spacing: 8px;
+      font-weight: 800;
     }
 
     .modal-buttons {
@@ -302,35 +356,35 @@
 
     .modal-btn {
       flex: 1;
-      padding: 0.75rem 1rem;
+      padding: 0.8rem 1rem;
       border: none;
       border-radius: 50px;
       font-family: 'Nunito', sans-serif;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .modal-btn.cancel {
-      background: rgba(255, 255, 255, 0.08);
-      color: #c4b5fd;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #f5f5f5;
+      color: #999;
+      border: 2px solid #eee;
     }
 
     .modal-btn.cancel:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
+      background: #eee;
+      color: #666;
     }
 
     .modal-btn.confirm {
-      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      background: linear-gradient(135deg, #FF4B4B, #FF8C00);
       color: #fff;
-      box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+      box-shadow: 0 4px 15px rgba(255, 75, 75, 0.35);
     }
 
     .modal-btn.confirm:hover {
-      box-shadow: 0 6px 25px rgba(238, 90, 36, 0.6);
+      box-shadow: 0 6px 25px rgba(255, 75, 75, 0.5);
       transform: translateY(-1px);
     }
 
@@ -342,20 +396,33 @@
     }
 
     .modal-error {
-      color: #ff6b6b;
+      color: #E63946;
       font-size: 0.85rem;
       text-align: center;
       margin-top: 0.8rem;
       min-height: 1.2rem;
+      font-weight: 700;
+    }
+
+    .modal-success {
+      color: #2ECC71;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 0.5rem;
+      font-weight: 700;
     }
 
     /* Footer */
     footer {
       text-align: center;
       padding: 2rem;
-      color: #6b5b95;
+      color: #bbb;
       font-size: 0.85rem;
+      font-weight: 600;
     }
+
+    /* Invisible reCAPTCHA container */
+    #recaptcha-container { }
 
     /* Mobile tweaks */
     @media (max-width: 700px) {
@@ -364,14 +431,18 @@
         padding: 1rem;
         gap: 1.5rem;
       }
+      .carro-card img { height: 260px; }
       .results-section { padding: 0 1rem; }
-      .modal { padding: 1.5rem; }
+      .modal { padding: 1.5rem; border-radius: 20px; }
     }
   </style>
 </head>
 <body>
 
 <canvas id="confetti-canvas"></canvas>
+
+<!-- Colorful top banner -->
+<div class="top-banner"></div>
 
 <header>
   <h1>Carnevale di Cento 2026</h1>
@@ -380,7 +451,7 @@
 
 <section class="carri-grid" id="carri-grid"></section>
 
-<section class="results-section" id="results-section">
+<section class="results-section">
   <h2>Classifica</h2>
   <div id="results-bars"></div>
 </section>
@@ -394,22 +465,41 @@
   <div class="modal">
     <h3>Vota per <span id="modal-carro-name"></span></h3>
     <p class="modal-subtitle">Inserisci i tuoi dati per votare</p>
-    <div class="form-group">
-      <label for="vote-nome">Nome *</label>
-      <input type="text" id="vote-nome" placeholder="Il tuo nome" autocomplete="name">
+
+    <!-- Step 1: User info -->
+    <div id="step-info">
+      <div class="form-group">
+        <label for="vote-nome">Nome *</label>
+        <input type="text" id="vote-nome" placeholder="Il tuo nome" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="vote-email">Email *</label>
+        <input type="email" id="vote-email" placeholder="la-tua@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="vote-telefono">Telefono * (con prefisso, es. +39...)</label>
+        <input type="tel" id="vote-telefono" placeholder="+39 333 1234567" autocomplete="tel">
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" onclick="closeModal()">Annulla</button>
+        <button class="modal-btn confirm" id="send-otp-btn" onclick="sendOTP()">Invia Codice</button>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="vote-telefono">Telefono</label>
-      <input type="tel" id="vote-telefono" placeholder="+39 333 1234567" autocomplete="tel">
+
+    <!-- Step 2: OTP verification -->
+    <div id="step-otp" class="otp-section">
+      <p>Abbiamo inviato un codice SMS al tuo numero.</p>
+      <div class="form-group">
+        <label for="vote-otp">Codice di verifica</label>
+        <input type="text" id="vote-otp" class="otp-input" placeholder="------" maxlength="6" inputmode="numeric">
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" onclick="backToInfo()">Indietro</button>
+        <button class="modal-btn confirm" id="verify-btn" onclick="verifyOTP()">Conferma Voto</button>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="vote-email">Email *</label>
-      <input type="email" id="vote-email" placeholder="la-tua@email.com" autocomplete="email">
-    </div>
-    <div class="modal-buttons">
-      <button class="modal-btn cancel" onclick="closeModal()">Annulla</button>
-      <button class="modal-btn confirm" id="confirm-btn" onclick="submitVote()">Conferma Voto</button>
-    </div>
+
+    <div id="recaptcha-container"></div>
     <p class="modal-error" id="modal-error"></p>
   </div>
 </div>
@@ -418,13 +508,34 @@
   Carnevale di Cento &mdash; Il Carnevale pi&ugrave; pazzo del mondo!
 </footer>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script>
   // ===========================================================
-  // CONFIG — Paste your Google Apps Script Web App URL here
+  // FIREBASE CONFIG — Paste your Firebase config here
   // ===========================================================
-  const GOOGLE_SCRIPT_URL = '';
-  // Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
+  const firebaseConfig = {
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+  };
   // ===========================================================
+
+  // Init Firebase
+  let app, auth, db, recaptchaVerifier, confirmationResult;
+  const firebaseReady = firebaseConfig.apiKey !== '';
+
+  if (firebaseReady) {
+    app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+  }
 
   // ---- Data ----
   const carri = [
@@ -442,31 +553,32 @@
   let voteCounts = {};
   let selectedCarroId = null;
 
-  function getUserVote() { return localStorage.getItem('carnevale_user_vote') || null; }
-  function setUserVote(id) { localStorage.setItem('carnevale_user_vote', id); }
-  function clearUserVote() { localStorage.removeItem('carnevale_user_vote'); }
+  function getUserVote() { return localStorage.getItem('carnevale2026_user_vote') || null; }
+  function setUserVote(id) { localStorage.setItem('carnevale2026_user_vote', id); }
+  function clearUserVote() { localStorage.removeItem('carnevale2026_user_vote'); }
 
   function initCounts() {
     carri.forEach(c => { if (!(c.id in voteCounts)) voteCounts[c.id] = 0; });
   }
 
-  // ---- Load votes from Google Sheets ----
-  async function loadVotesFromSheet() {
-    if (!GOOGLE_SCRIPT_URL) return;
+  // ---- Load votes from Firestore ----
+  async function loadVotes() {
+    if (!firebaseReady) return;
     try {
-      const res = await fetch(GOOGLE_SCRIPT_URL);
-      const json = await res.json();
-      if (json.result === 'success' && json.counts) {
-        // Map carro names back to IDs
-        Object.entries(json.counts).forEach(([carro, count]) => {
-          const found = carri.find(c => c.name === carro || c.id === carro);
-          if (found) voteCounts[found.id] = count;
-        });
-        renderCards();
-        renderResults();
-      }
+      const snapshot = await db.collection('votes').get();
+      // Reset counts
+      carri.forEach(c => voteCounts[c.id] = 0);
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const carroId = data.carroId;
+        if (carroId && carroId in voteCounts) {
+          voteCounts[carroId]++;
+        }
+      });
+      renderCards();
+      renderResults();
     } catch (e) {
-      console.warn('Could not load votes from Google Sheets:', e);
+      console.warn('Could not load votes from Firestore:', e);
     }
   }
 
@@ -475,10 +587,14 @@
     selectedCarroId = carroId;
     document.getElementById('modal-carro-name').textContent = carroNameMap[carroId];
     document.getElementById('vote-nome').value = '';
-    document.getElementById('vote-telefono').value = '';
     document.getElementById('vote-email').value = '';
+    document.getElementById('vote-telefono').value = '';
+    document.getElementById('vote-otp').value = '';
     document.getElementById('modal-error').textContent = '';
-    document.getElementById('confirm-btn').disabled = false;
+    document.getElementById('step-info').style.display = 'block';
+    document.getElementById('step-otp').classList.remove('active');
+    document.getElementById('send-otp-btn').disabled = false;
+    document.getElementById('send-otp-btn').textContent = 'Invia Codice';
     document.getElementById('vote-modal').classList.add('active');
     document.getElementById('vote-nome').focus();
   }
@@ -488,72 +604,156 @@
     selectedCarroId = null;
   }
 
+  function backToInfo() {
+    document.getElementById('step-otp').classList.remove('active');
+    document.getElementById('step-info').style.display = 'block';
+    document.getElementById('modal-error').textContent = '';
+  }
+
   // Close modal on overlay click
   document.getElementById('vote-modal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
 
-  // Close modal on Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
 
-  // ---- Submit Vote ----
-  async function submitVote() {
+  // ---- Send OTP ----
+  async function sendOTP() {
     const nome = document.getElementById('vote-nome').value.trim();
-    const telefono = document.getElementById('vote-telefono').value.trim();
     const email = document.getElementById('vote-email').value.trim();
+    const telefono = document.getElementById('vote-telefono').value.trim();
     const errorEl = document.getElementById('modal-error');
-    const confirmBtn = document.getElementById('confirm-btn');
+    const sendBtn = document.getElementById('send-otp-btn');
 
     // Validation
     if (!nome) { errorEl.textContent = 'Inserisci il tuo nome.'; return; }
-    if (!email) { errorEl.textContent = 'Inserisci la tua email.'; return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       errorEl.textContent = 'Inserisci un indirizzo email valido.'; return;
+    }
+    if (!telefono) { errorEl.textContent = 'Inserisci il tuo numero di telefono.'; return; }
+    if (!/^\+\d{8,15}$/.test(telefono.replace(/[\s\-]/g, ''))) {
+      errorEl.textContent = 'Inserisci il numero con prefisso internazionale (es. +39333...).'; return;
+    }
+
+    if (!firebaseReady) {
+      errorEl.textContent = 'Firebase non configurato. Contatta l\'organizzatore.';
+      return;
     }
 
     errorEl.textContent = '';
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = 'Invio...';
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Invio...';
 
-    const carroName = carroNameMap[selectedCarroId];
-
-    // Send to Google Sheets
-    if (GOOGLE_SCRIPT_URL) {
-      try {
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            nome: nome,
-            telefono: telefono,
-            email: email,
-            carro: carroName
-          })
-        });
-      } catch (e) {
-        console.warn('Google Sheets POST failed:', e);
-        errorEl.textContent = 'Errore di rete. Riprova.';
-        confirmBtn.disabled = false;
-        confirmBtn.textContent = 'Conferma Voto';
+    try {
+      // Check if phone already voted
+      const phoneClean = telefono.replace(/[\s\-]/g, '');
+      const existing = await db.collection('votes').doc(phoneClean).get();
+      if (existing.exists) {
+        errorEl.textContent = 'Questo numero ha gi\u00E0 votato!';
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Invia Codice';
         return;
       }
+
+      // Setup invisible reCAPTCHA
+      if (!recaptchaVerifier) {
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          size: 'invisible'
+        });
+      }
+
+      confirmationResult = await auth.signInWithPhoneNumber(phoneClean, recaptchaVerifier);
+
+      // Show OTP step
+      document.getElementById('step-info').style.display = 'none';
+      document.getElementById('step-otp').classList.add('active');
+      document.getElementById('vote-otp').focus();
+
+    } catch (e) {
+      console.error('OTP error:', e);
+      if (e.code === 'auth/too-many-requests') {
+        errorEl.textContent = 'Troppi tentativi. Riprova pi\u00F9 tardi.';
+      } else if (e.code === 'auth/invalid-phone-number') {
+        errorEl.textContent = 'Numero di telefono non valido.';
+      } else {
+        errorEl.textContent = 'Errore nell\'invio del codice. Riprova.';
+      }
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Invia Codice';
+      // Reset reCAPTCHA on error
+      recaptchaVerifier = null;
+    }
+  }
+
+  // ---- Verify OTP & Submit Vote ----
+  async function verifyOTP() {
+    const otp = document.getElementById('vote-otp').value.trim();
+    const errorEl = document.getElementById('modal-error');
+    const verifyBtn = document.getElementById('verify-btn');
+
+    if (!otp || otp.length !== 6) {
+      errorEl.textContent = 'Inserisci il codice a 6 cifre.'; return;
     }
 
-    // Save locally
-    voteCounts[selectedCarroId] = (voteCounts[selectedCarroId] || 0) + 1;
-    setUserVote(selectedCarroId);
+    errorEl.textContent = '';
+    verifyBtn.disabled = true;
+    verifyBtn.textContent = 'Verifica...';
 
-    closeModal();
+    try {
+      await confirmationResult.confirm(otp);
+
+      const nome = document.getElementById('vote-nome').value.trim();
+      const email = document.getElementById('vote-email').value.trim();
+      const telefono = document.getElementById('vote-telefono').value.trim();
+      const phoneClean = telefono.replace(/[\s\-]/g, '');
+
+      // Save vote to Firestore (phone number as doc ID = unique)
+      await db.collection('votes').doc(phoneClean).set({
+        nome: nome,
+        email: email,
+        telefono: phoneClean,
+        carroId: selectedCarroId,
+        carroName: carroNameMap[selectedCarroId],
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Update local state
+      voteCounts[selectedCarroId] = (voteCounts[selectedCarroId] || 0) + 1;
+      setUserVote(selectedCarroId);
+
+      closeModal();
+      renderCards();
+      renderResults();
+      launchConfetti();
+
+    } catch (e) {
+      console.error('Verify error:', e);
+      if (e.code === 'auth/invalid-verification-code') {
+        errorEl.textContent = 'Codice non valido. Riprova.';
+      } else {
+        errorEl.textContent = 'Errore nella verifica. Riprova.';
+      }
+      verifyBtn.disabled = false;
+      verifyBtn.textContent = 'Conferma Voto';
+    }
+  }
+
+  // ---- Vote Action (opens modal) ----
+  function vote(id) {
+    if (getUserVote()) return;
+    openModal(id);
+  }
+
+  // ---- Reset Vote ----
+  function resetVote() {
+    const prev = getUserVote();
+    if (!prev) return;
+    if (voteCounts[prev] > 0) voteCounts[prev]--;
+    clearUserVote();
     renderCards();
     renderResults();
-    launchConfetti();
-
-    confirmBtn.disabled = false;
-    confirmBtn.textContent = 'Conferma Voto';
   }
 
   // ---- Render Cards ----
@@ -565,7 +765,7 @@
       const isVoted = userVote === c.id;
       const btnLabel = isVoted ? '&#10003; Votato!' : 'Vota';
       const btnClass = isVoted ? 'vote-btn voted' : 'vote-btn';
-      const disabled = userVote && !isVoted ? 'disabled style="opacity:0.4;cursor:default;"' : '';
+      const disabled = userVote && !isVoted ? 'disabled style="opacity:0.35;cursor:default;"' : '';
       return `
         <div class="carro-card">
           <img src="${c.img}" alt="${c.name}" loading="lazy">
@@ -585,37 +785,20 @@
     const totalVotes = Object.values(voteCounts).reduce((a, b) => a + b, 0);
     const sorted = [...carri].sort((a, b) => (voteCounts[b.id] || 0) - (voteCounts[a.id] || 0));
 
-    const barsEl = document.getElementById('results-bars');
-    barsEl.innerHTML = sorted.map(c => {
+    document.getElementById('results-bars').innerHTML = sorted.map(c => {
       const count = voteCounts[c.id] || 0;
       const pct = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
       return `
         <div class="result-bar-container">
           <div class="result-label">
             <span>${c.name}</span>
-            <span>${pct}%</span>
+            <span>${count} vot${count === 1 ? 'o' : 'i'} &middot; ${pct}%</span>
           </div>
           <div class="result-bar">
             <div class="result-fill ${c.barClass}" style="width: ${pct}%"></div>
           </div>
         </div>`;
     }).join('');
-  }
-
-  // ---- Vote Action (opens modal) ----
-  function vote(id) {
-    if (getUserVote()) return;
-    openModal(id);
-  }
-
-  // ---- Reset Vote ----
-  function resetVote() {
-    const prev = getUserVote();
-    if (!prev) return;
-    if (voteCounts[prev] > 0) voteCounts[prev]--;
-    clearUserVote();
-    renderCards();
-    renderResults();
   }
 
   // ---- Confetti ----
@@ -625,10 +808,10 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#a78bfa', '#ff9a3c', '#ee5a24'];
+    const colors = ['#FF4B4B', '#FF8C00', '#FFD700', '#32CD32', '#4169E1', '#9B59B6', '#E63946'];
     const pieces = [];
 
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 200; i++) {
       pieces.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height - canvas.height,
@@ -669,7 +852,7 @@
   initCounts();
   renderCards();
   renderResults();
-  loadVotesFromSheet();
+  loadVotes();
 </script>
 </body>
 </html>
